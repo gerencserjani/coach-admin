@@ -22,3 +22,10 @@ export interface LoginResponse {
   accessToken: string;
   coach: Coach;
 }
+
+export interface AllowedOrigin {
+  id: string;
+  origin: string;
+  label: string | null;
+  createdAt: string;
+}

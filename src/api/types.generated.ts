@@ -20,6 +20,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/allowed-origins": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["AllowedOriginsController_findAll"];
+    put?: never;
+    post: operations["AllowedOriginsController_create"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/allowed-origins/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations["AllowedOriginsController_remove"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/auth/login": {
     parameters: {
       query?: never;
@@ -82,6 +114,22 @@ export interface paths {
     options?: never;
     head?: never;
     patch: operations["CoachesController_updateMe"];
+    trace?: never;
+  };
+  "/coaches/me/password": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations["CoachesController_changePassword"];
     trace?: never;
   };
   "/coaches/{id}/revoke-sessions": {
@@ -408,6 +456,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    CreateAllowedOriginDto: {
+      /** Format: uri */
+      origin: string;
+      label?: string;
+    };
     LoginDto: {
       /** Format: email */
       email: string;
@@ -423,6 +476,10 @@ export interface components {
       name?: string;
       /** @enum {string} */
       preferredLocale?: "hu" | "en";
+    };
+    ChangePasswordDto: {
+      currentPassword: string;
+      newPassword: string;
     };
     CreateCoachDto: {
       /** Format: email */
@@ -500,6 +557,63 @@ export interface operations {
       query?: never;
       header?: never;
       path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AllowedOriginsController_findAll: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AllowedOriginsController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAllowedOriginDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AllowedOriginsController_remove: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
       cookie?: never;
     };
     requestBody?: never;
@@ -649,6 +763,27 @@ export interface operations {
       };
     };
   };
+  CoachesController_changePassword: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChangePasswordDto"];
+      };
+    };
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
   CoachesController_revokeSessions: {
     parameters: {
       query?: never;
@@ -710,7 +845,9 @@ export interface operations {
   };
   EventTypesController_findMine: {
     parameters: {
-      query?: never;
+      query?: {
+        coachId?: string;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -809,7 +946,9 @@ export interface operations {
   };
   AvailabilityController_findMyWeekly: {
     parameters: {
-      query?: never;
+      query?: {
+        coachId?: string;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -889,7 +1028,9 @@ export interface operations {
   };
   AvailabilityController_findMyOverrides: {
     parameters: {
-      query?: never;
+      query?: {
+        coachId?: string;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -1066,7 +1207,9 @@ export interface operations {
   };
   BookingsController_findAll: {
     parameters: {
-      query?: never;
+      query?: {
+        coachId?: string;
+      };
       header?: never;
       path?: never;
       cookie?: never;

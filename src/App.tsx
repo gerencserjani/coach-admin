@@ -5,6 +5,7 @@ import { EnvSwitcher } from "./components/EnvSwitcher";
 import { LoginForm } from "./components/LoginForm";
 import { CoachList } from "./components/CoachList";
 import { CreateCoachForm } from "./components/CreateCoachForm";
+import { AllowedOriginsSection } from "./components/AllowedOriginsSection";
 
 export default function App() {
   const [coach, setCoach] = useState<Coach | null>(null);
@@ -52,6 +53,7 @@ export default function App() {
       </div>
       <CreateCoachForm />
       <CoachList />
+      <AllowedOriginsSection />
     </div>
   );
 }
