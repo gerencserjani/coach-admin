@@ -1,5 +1,5 @@
 import { ApiError, extractApiErrorMessage, getApiClient } from "./client";
-import type { Coach, LoginResponse } from "./models";
+import type { AllowedOrigin, Coach, LoginResponse } from "./models";
 import type { components } from "./types.generated";
 
 async function unwrap<T>(
@@ -26,6 +26,20 @@ export const coachesApi = {
   revokeSessions: (id: string) =>
     unwrap<Coach>(
       getApiClient().PATCH("/coaches/{id}/revoke-sessions", {
+        params: { path: { id } },
+      }),
+    ),
+};
+
+export const allowedOriginsApi = {
+  list: () => unwrap<AllowedOrigin[]>(getApiClient().GET("/allowed-origins")),
+
+  create: (body: components["schemas"]["CreateAllowedOriginDto"]) =>
+    unwrap<AllowedOrigin>(getApiClient().POST("/allowed-origins", { body })),
+
+  remove: (id: string) =>
+    unwrap<void>(
+      getApiClient().DELETE("/allowed-origins/{id}", {
         params: { path: { id } },
       }),
     ),
