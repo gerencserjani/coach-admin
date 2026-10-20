@@ -16,6 +16,10 @@ export interface Coach {
   createdAt: string;
   updatedAt: string;
   sessionsRevokedAt: string | null;
+  // The coach's own site, set once at invite-acceptance time -- see
+  // coach-calendar's CoachesService.invite/acceptInvite. Null for a coach
+  // that predates this field, or for the ADMIN account.
+  frontendUrl: string | null;
 }
 
 export interface LoginResponse {

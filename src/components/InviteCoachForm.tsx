@@ -1,5 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { coachesApi } from "../api/endpoints";
+import { allowedOriginsApi, coachesApi } from "../api/endpoints";
 import { getErrorMessage } from "../api/client";
 
 /**
@@ -8,6 +9,13 @@ import { getErrorMessage } from "../api/client";
  * existence once they open it and set their own password (see
  * gerencserjani/coach-calendar#32). Submitting again for the same
  * not-yet-accepted email just sends a fresh link.
+ *
+ * The site field is a dropdown over the already-allow-listed AllowedOrigin
+ * rows (see AllowedOriginsSection), not a freehand URL -- an invite can
+ * only ever point at a real, known site. Sites that already belong to a
+ * coach (coach.frontendUrl) are filtered out here as a UX convenience; the
+ * backend enforces the same one-coach-per-site rule for real (see
+ * CoachesService.invite's 409).
  */
 export function InviteCoachForm() {
   const [name, setName] = useState("");
@@ -16,6 +24,20 @@ export function InviteCoachForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const { data: origins } = useQuery({
+    queryKey: ["allowed-origins"],
+    queryFn: allowedOriginsApi.list,
+  });
+  const { data: coaches } = useQuery({
+    queryKey: ["coaches"],
+    queryFn: coachesApi.list,
+  });
+
+  const takenSites = new Set(
+    coaches?.map((c) => c.frontendUrl).filter((url) => url !== null),
+  );
+  const availableOrigins = origins?.filter((o) => !takenSites.has(o.origin));
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,14 +84,26 @@ export function InviteCoachForm() {
         </label>
         <label>
           Site URL
-          <input
-            type="url"
+          <select
             value={frontendUrl}
             onChange={(e) => setFrontendUrl(e.target.value)}
-            placeholder="https://peti-coaching.vercel.app"
             required
-          />
+          >
+            <option value="" disabled>
+              Select an allowed origin...
+            </option>
+            {availableOrigins?.map((o) => (
+              <option key={o.id} value={o.origin}>
+                {o.label ? `${o.label} (${o.origin})` : o.origin}
+              </option>
+            ))}
+          </select>
         </label>
+        {origins && availableOrigins?.length === 0 && (
+          <p className="muted">
+            Every allowed origin already has a coach. Add a new one below first.
+          </p>
+        )}
         {error && <div className="error">{error}</div>}
         {success && <div>{success}</div>}
         <button type="submit" disabled={submitting}>
