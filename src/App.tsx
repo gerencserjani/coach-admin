@@ -4,7 +4,7 @@ import type { Coach } from "./api/models";
 import { EnvSwitcher } from "./components/EnvSwitcher";
 import { LoginForm } from "./components/LoginForm";
 import { CoachList } from "./components/CoachList";
-import { CreateCoachForm } from "./components/CreateCoachForm";
+import { InviteCoachForm } from "./components/InviteCoachForm";
 
 export default function App() {
   const [coach, setCoach] = useState<Coach | null>(null);
@@ -50,7 +50,7 @@ export default function App() {
           }}
         />
       </div>
-      <CreateCoachForm />
+      <InviteCoachForm />
       <CoachList />
     </div>
   );

@@ -1,21 +1,18 @@
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { coachesApi } from "../api/endpoints";
 import { getErrorMessage } from "../api/client";
 
 /**
- * Creates a coach with a password set directly by the admin -- the
- * invite-based flow (admin sets only email/name, coach sets her own
- * password via an emailed link) is tracked as
- * gerencserjani/coach-calendar#32. Until that lands, this is how a new
- * coach gets provisioned: give them the password out of band (phone,
- * Signal -- not plaintext email) and have them change it once logged in.
+ * Invites a brand-new coach -- this does NOT create a Coach row. It only
+ * sends a signed accept-link to the given email; the Coach only comes into
+ * existence once they open it and set their own password (see
+ * gerencserjani/coach-calendar#32). Submitting again for the same
+ * not-yet-accepted email just sends a fresh link.
  */
-export function CreateCoachForm() {
-  const queryClient = useQueryClient();
+export function InviteCoachForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [frontendUrl, setFrontendUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -26,14 +23,13 @@ export function CreateCoachForm() {
     setSuccess(null);
     setSubmitting(true);
     try {
-      const coach = await coachesApi.create({ name, email, password });
-      await queryClient.invalidateQueries({ queryKey: ["coaches"] });
-      setSuccess(`Created ${coach.name} (id: ${coach.id})`);
+      await coachesApi.invite({ name, email, frontendUrl });
+      setSuccess(`Invite sent to ${email}.`);
       setName("");
       setEmail("");
-      setPassword("");
+      setFrontendUrl("");
     } catch (err) {
-      setError(getErrorMessage(err, "Could not create coach."));
+      setError(getErrorMessage(err, "Could not send invite."));
     } finally {
       setSubmitting(false);
     }
@@ -41,10 +37,10 @@ export function CreateCoachForm() {
 
   return (
     <div className="card">
-      <h2>Create coach</h2>
+      <h2>Invite coach</h2>
       <p className="muted">
-        Give the password to the coach out of band, not over email -- they can
-        change it after logging in (once gerencserjani/coach-calendar#31 ships).
+        Sends a signed link to this email -- the coach sets her own password
+        there, which is what actually creates the account.
       </p>
       <form onSubmit={handleSubmit}>
         <label>
@@ -65,19 +61,19 @@ export function CreateCoachForm() {
           />
         </label>
         <label>
-          Initial password
+          Site URL
           <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={8}
+            type="url"
+            value={frontendUrl}
+            onChange={(e) => setFrontendUrl(e.target.value)}
+            placeholder="https://peti-coaching.vercel.app"
             required
           />
         </label>
         {error && <div className="error">{error}</div>}
         {success && <div>{success}</div>}
         <button type="submit" disabled={submitting}>
-          {submitting ? "Creating..." : "Create coach"}
+          {submitting ? "Sending invite..." : "Send invite"}
         </button>
       </form>
     </div>
