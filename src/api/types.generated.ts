@@ -93,7 +93,7 @@ export interface paths {
     };
     get: operations["CoachesController_findAll"];
     put?: never;
-    post: operations["CoachesController_create"];
+    post: operations["CoachesController_invite"];
     delete?: never;
     options?: never;
     head?: never;
@@ -130,6 +130,22 @@ export interface paths {
     options?: never;
     head?: never;
     patch: operations["CoachesController_changePassword"];
+    trace?: never;
+  };
+  "/coaches/accept-invite": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["CoachesController_acceptInvite"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
     trace?: never;
   };
   "/coaches/{id}/revoke-sessions": {
@@ -481,11 +497,16 @@ export interface components {
       currentPassword: string;
       newPassword: string;
     };
-    CreateCoachDto: {
+    InviteCoachDto: {
       /** Format: email */
       email: string;
-      password: string;
       name: string;
+      /** Format: uri */
+      frontendUrl: string;
+    };
+    AcceptInviteDto: {
+      token: string;
+      password: string;
     };
     CreateEventTypeDto: {
       title: string;
@@ -704,7 +725,7 @@ export interface operations {
       };
     };
   };
-  CoachesController_create: {
+  CoachesController_invite: {
     parameters: {
       query?: never;
       header?: never;
@@ -713,11 +734,11 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateCoachDto"];
+        "application/json": components["schemas"]["InviteCoachDto"];
       };
     };
     responses: {
-      201: {
+      204: {
         headers: {
           [name: string]: unknown;
         };
@@ -777,6 +798,27 @@ export interface operations {
     };
     responses: {
       204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  CoachesController_acceptInvite: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AcceptInviteDto"];
+      };
+    };
+    responses: {
+      201: {
         headers: {
           [name: string]: unknown;
         };
@@ -1229,7 +1271,10 @@ export interface operations {
   BookingsController_create: {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        origin: string;
+        referer: string;
+      };
       path?: never;
       cookie?: never;
     };

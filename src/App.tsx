@@ -4,7 +4,7 @@ import type { Coach } from "./api/models";
 import { EnvSwitcher } from "./components/EnvSwitcher";
 import { LoginForm } from "./components/LoginForm";
 import { CoachList } from "./components/CoachList";
-import { CreateCoachForm } from "./components/CreateCoachForm";
+import { InviteCoachForm } from "./components/InviteCoachForm";
 import { AllowedOriginsSection } from "./components/AllowedOriginsSection";
 
 export default function App() {
@@ -51,7 +51,7 @@ export default function App() {
           }}
         />
       </div>
-      <CreateCoachForm />
+      <InviteCoachForm />
       <CoachList />
       <AllowedOriginsSection />
     </div>

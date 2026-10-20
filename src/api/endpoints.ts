@@ -20,8 +20,8 @@ export const authApi = {
 export const coachesApi = {
   list: () => unwrap<Coach[]>(getApiClient().GET("/coaches")),
 
-  create: (body: components["schemas"]["CreateCoachDto"]) =>
-    unwrap<Coach>(getApiClient().POST("/coaches", { body })),
+  invite: (body: components["schemas"]["InviteCoachDto"]) =>
+    unwrap<void>(getApiClient().POST("/coaches", { body })),
 
   revokeSessions: (id: string) =>
     unwrap<Coach>(
