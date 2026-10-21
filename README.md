@@ -5,8 +5,9 @@ Internal tool for managing coaches on the shared [coach-calendar](https://github
 Lets a platform ADMIN:
 
 - Switch between the local dev backend and a deployed one at runtime (no rebuild needed) -- see the backend switcher at the top of the page.
-- List existing coaches.
-- Create a new coach (currently password-based -- an admin sets an initial password directly and hands it to the coach out of band; see [gerencserjani/coach-calendar#32](https://github.com/gerencserjani/coach-calendar/issues/32) for the planned invite-based flow where the coach sets her own password instead).
+- List existing coaches, and see/assign each one's site (`frontendUrl`) -- normally set automatically when a coach accepts her invite (see next bullet), but fixable here for the one coach that predates that flow (the seeded ADMIN account).
+- Invite a new coach to one of the already-allow-listed sites below ([gerencserjani/coach-calendar#32](https://github.com/gerencserjani/coach-calendar/issues/32)): sends a signed link to her email, and she sets her own password there, which is what actually creates the `Coach` row -- nothing is created here just by sending the invite.
+- Manage the platform-wide "Allowed origins" (CORS) list -- every deployed coach frontend has to be added here before that coach can be invited to it, or before its browser can reach the backend at all.
 - Revoke a coach's sessions (forces re-login everywhere, e.g. for a leaked token or an offboarded coach).
 
 ## Getting started
