@@ -29,6 +29,14 @@ export const coachesApi = {
         params: { path: { id } },
       }),
     ),
+
+  setFrontendUrl: (id: string, frontendUrl: string) =>
+    unwrap<Coach>(
+      getApiClient().PATCH("/coaches/{id}/frontend-url", {
+        params: { path: { id } },
+        body: { frontendUrl },
+      }),
+    ),
 };
 
 export const allowedOriginsApi = {
