@@ -27,6 +27,6 @@ Log in with an existing ADMIN account's email/password (this tool only accepts A
 npm run generate:api-types   # requires the backend running locally on :3000
 ```
 
-## Why a separate repo instead of folding this into betti-coaching
+## Why a separate repo instead of folding this into coach-monorepo
 
-The backend is designed as one shared service for many independent, coach-branded frontends (see coach-calendar's `CONTEXT.md`, backend issue #14). Coach management is a cross-coach, platform-level concern -- it doesn't belong inside any single coach's own branded site.
+The backend is designed as one shared service for many independent, coach-branded frontends (see coach-calendar's `CONTEXT.md`, backend issue #14). Coach management is a cross-coach, platform-level concern -- it doesn't belong inside `coach-monorepo` either, even though that repo is itself a monorepo of multiple coaches' sites now: each `apps/<coach>` there is still one coach's own branded site, and this tool manages coaches as a platform-level concern above any of them.
