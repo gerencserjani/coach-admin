@@ -32,6 +32,16 @@ export interface CoachListItem extends Coach {
   emailFrom: string | null;
 }
 
+// A sent invite that hasn't been accepted yet -- see coach-calendar's
+// CoachInviteLog/CoachesService.findPendingInvites(). Purely informational,
+// never used for auth.
+export interface PendingInvite {
+  email: string;
+  name: string;
+  frontendUrl: string;
+  sentAt: string;
+}
+
 export interface LoginResponse {
   accessToken: string;
   coach: Coach;

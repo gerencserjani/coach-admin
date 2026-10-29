@@ -4,6 +4,7 @@ import type {
   Coach,
   CoachListItem,
   LoginResponse,
+  PendingInvite,
 } from "./models";
 import type { components } from "./types.generated";
 
@@ -42,6 +43,9 @@ export const coachesApi = {
         body: { frontendUrl },
       }),
     ),
+
+  pendingInvites: () =>
+    unwrap<PendingInvite[]>(getApiClient().GET("/coaches/pending-invites")),
 };
 
 export const allowedOriginsApi = {

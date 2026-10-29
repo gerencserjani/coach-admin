@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { allowedOriginsApi, coachesApi } from "../api/endpoints";
 import { getErrorMessage } from "../api/client";
@@ -18,6 +18,7 @@ import { getErrorMessage } from "../api/client";
  * CoachesService.invite's 409).
  */
 export function InviteCoachForm() {
+  const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [frontendUrl, setFrontendUrl] = useState("");
@@ -46,6 +47,7 @@ export function InviteCoachForm() {
     setSubmitting(true);
     try {
       await coachesApi.invite({ name, email, frontendUrl });
+      await queryClient.invalidateQueries({ queryKey: ["pending-invites"] });
       setSuccess(`Invite sent to ${email}.`);
       setName("");
       setEmail("");
