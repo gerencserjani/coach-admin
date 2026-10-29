@@ -45,6 +45,7 @@ export function CoachList() {
             <th>Role</th>
             <th>Id</th>
             <th>Site</th>
+            <th>Google Calendar</th>
             <th></th>
           </tr>
         </thead>
@@ -62,6 +63,15 @@ export function CoachList() {
                   origins={origins}
                   onError={setError}
                 />
+              </td>
+              <td>
+                {coach.googleCalendarConnected ? (
+                  <span title={coach.googleCalendarConnectedEmail ?? undefined}>
+                    Connected
+                  </span>
+                ) : (
+                  <span className="muted">Not connected</span>
+                )}
               </td>
               <td>
                 <button
