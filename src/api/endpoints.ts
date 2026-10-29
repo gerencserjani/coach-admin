@@ -1,5 +1,10 @@
 import { ApiError, extractApiErrorMessage, getApiClient } from "./client";
-import type { AllowedOrigin, Coach, LoginResponse } from "./models";
+import type {
+  AllowedOrigin,
+  Coach,
+  CoachListItem,
+  LoginResponse,
+} from "./models";
 import type { components } from "./types.generated";
 
 async function unwrap<T>(
@@ -18,7 +23,7 @@ export const authApi = {
 };
 
 export const coachesApi = {
-  list: () => unwrap<Coach[]>(getApiClient().GET("/coaches")),
+  list: () => unwrap<CoachListItem[]>(getApiClient().GET("/coaches")),
 
   invite: (body: components["schemas"]["InviteCoachDto"]) =>
     unwrap<void>(getApiClient().POST("/coaches", { body })),

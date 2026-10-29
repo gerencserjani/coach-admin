@@ -22,6 +22,14 @@ export interface Coach {
   frontendUrl: string | null;
 }
 
+// GET /coaches (admin list) only -- see CoachesService.findAll(). Other
+// endpoints returning Coach (e.g. GET /coaches/me) don't carry these, so
+// they're deliberately not on the base Coach type.
+export interface CoachListItem extends Coach {
+  googleCalendarConnected: boolean;
+  googleCalendarConnectedEmail: string | null;
+}
+
 export interface LoginResponse {
   accessToken: string;
   coach: Coach;
