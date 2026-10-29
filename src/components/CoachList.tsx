@@ -46,6 +46,7 @@ export function CoachList() {
             <th>Id</th>
             <th>Site</th>
             <th>Google Calendar</th>
+            <th>Email Sending</th>
             <th></th>
           </tr>
         </thead>
@@ -71,6 +72,13 @@ export function CoachList() {
                   </span>
                 ) : (
                   <span className="muted">Not connected</span>
+                )}
+              </td>
+              <td>
+                {coach.usesOwnEmailDomain ? (
+                  <span title={coach.emailFrom ?? undefined}>Own domain</span>
+                ) : (
+                  <span className="muted">Shared Gmail fallback</span>
                 )}
               </td>
               <td>

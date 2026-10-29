@@ -28,6 +28,8 @@ export interface Coach {
 export interface CoachListItem extends Coach {
   googleCalendarConnected: boolean;
   googleCalendarConnectedEmail: string | null;
+  usesOwnEmailDomain: boolean;
+  emailFrom: string | null;
 }
 
 export interface LoginResponse {
