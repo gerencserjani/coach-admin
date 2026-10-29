@@ -5,6 +5,7 @@ import { EnvSwitcher } from "./components/EnvSwitcher";
 import { LoginForm } from "./components/LoginForm";
 import { CoachList } from "./components/CoachList";
 import { InviteCoachForm } from "./components/InviteCoachForm";
+import { PendingInvitesSection } from "./components/PendingInvitesSection";
 import { AllowedOriginsSection } from "./components/AllowedOriginsSection";
 
 export default function App() {
@@ -52,6 +53,7 @@ export default function App() {
         />
       </div>
       <InviteCoachForm />
+      <PendingInvitesSection />
       <CoachList />
       <AllowedOriginsSection />
     </div>
